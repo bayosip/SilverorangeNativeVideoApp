@@ -1,4 +1,4 @@
-package com.startupia.silverorangenativevideoapp.network.util
+package com.silverorange.videoplayer.network.util
 
 /**
  * Resource class for handling the different request states

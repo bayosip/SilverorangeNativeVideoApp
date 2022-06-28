@@ -1,6 +1,6 @@
-package com.startupia.silverorangenativevideoapp.data
+package com.silverorange.videoplayer.data
 
-import com.startupia.silverorangenativevideoapp.network.util.Resource
+import com.silverorange.videoplayer.network.util.Resource
 import retrofit2.Response
 import java.lang.Exception
 

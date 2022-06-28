@@ -1,6 +1,6 @@
-package com.startupia.silverorangenativevideoapp.network
+package com.silverorange.videoplayer.network
 
-import com.startupia.silverorangenativevideoapp.repository.RepositoryImpl
+import com.silverorange.videoplayer.repository.RepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,8 +1,8 @@
-package com.startupia.silverorangenativevideoapp.ui
+package com.silverorange.videoplayer.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import com.startupia.silverorangenativevideoapp.R
+import com.silverorange.videoplayer.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

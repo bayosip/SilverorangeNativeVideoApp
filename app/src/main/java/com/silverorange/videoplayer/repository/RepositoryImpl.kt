@@ -1,10 +1,9 @@
-package com.startupia.silverorangenativevideoapp.repository
+package com.silverorange.videoplayer.repository
 
-import android.provider.MediaStore
-import com.startupia.silverorangenativevideoapp.data.BaseDataSource
-import com.startupia.silverorangenativevideoapp.data.SOvideo
-import com.startupia.silverorangenativevideoapp.network.ApiService
-import com.startupia.silverorangenativevideoapp.network.util.Resource
+import com.silverorange.videoplayer.data.BaseDataSource
+import com.silverorange.videoplayer.data.SOvideo
+import com.silverorange.videoplayer.network.ApiService
+import com.silverorange.videoplayer.network.util.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject

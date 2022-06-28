@@ -1,4 +1,4 @@
-package com.startupia.silverorangenativevideoapp.data
+package com.silverorange.videoplayer.data
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,6 +1,6 @@
-package com.startupia.silverorangenativevideoapp.network
+package com.silverorange.videoplayer.network
 
-import com.startupia.silverorangenativevideoapp.data.SOvideo
+import com.silverorange.videoplayer.data.SOvideo
 import retrofit2.Response
 import retrofit2.http.GET
 

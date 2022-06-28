@@ -1,4 +1,4 @@
-package com.startupia.silverorangenativevideoapp
+package com.silverorange.videoplayer
 
 import org.junit.Test
 
