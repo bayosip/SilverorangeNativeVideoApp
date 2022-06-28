@@ -9,5 +9,6 @@ data class ScreenState(
     val isLoading: Boolean = false,
     val isVideoPlaying: Boolean = false,
     val currentIndex: Int = 0,
+    val currentVideo: SOvideo? = null,
     val videos: List<SOvideo>? = null,
 )

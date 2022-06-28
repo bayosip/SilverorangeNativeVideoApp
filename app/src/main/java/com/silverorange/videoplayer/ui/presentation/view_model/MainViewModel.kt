@@ -35,7 +35,8 @@ class MainViewModel @Inject constructor(
                     Resource.STATUS.SUCCESS -> {
                         state.value = _state.value.copy(
                             videos = result.data,
-                            isLoading = false
+                            isLoading = false,
+                            currentVideo = result.data?.get(0)
                         )
                     }
                     Resource.STATUS.ERROR -> Log.e(
@@ -49,20 +50,30 @@ class MainViewModel @Inject constructor(
     }
 
     fun playPauseVideo() {
-        state.value = _state.value.copy(isVideoPlaying = true)
+        if (_state.value.isVideoPlaying)
+            state.value = _state.value.copy(isVideoPlaying = false)
+        else state.value = _state.value.copy(isVideoPlaying = true)
     }
 
     //If the end of playList reached, play zero index video, else play next video
     fun playNextVideo() {
         val next = if (_state.value.currentIndex == (_state.value.videos?.size?.minus(1)))
             0 else _state.value.currentIndex + 1
-        state.value = _state.value.copy(isVideoPlaying = false, currentIndex = next)
+        state.value = _state.value.copy(
+            isVideoPlaying = true,
+            currentIndex = next,
+            currentVideo = _state.value.videos?.get(next)
+        )
     }
 
     //If on first video of playList, play last index video, else play previous video
     fun playPrevVideo() {
         val prev = if (_state.value.currentIndex != 0)
             _state.value.currentIndex - 1 else _state.value.videos?.size?.minus(1) ?: 0
-        state.value = _state.value.copy(isVideoPlaying = false, currentIndex = prev)
+        state.value = _state.value.copy(
+            isVideoPlaying = true,
+            currentIndex = prev,
+            currentVideo = _state.value.videos?.get(prev)
+        )
     }
 }

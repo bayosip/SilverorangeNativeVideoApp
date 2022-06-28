@@ -26,8 +26,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
         jvmTarget = "1.8"
@@ -78,6 +78,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1"
     // Integration with observables
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
 
     //Exoplayer
     implementation "com.google.android.exoplayer:exoplayer:2.18.0"
