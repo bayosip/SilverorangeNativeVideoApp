@@ -7,5 +7,5 @@ import retrofit2.http.GET
 interface ApiService {
 
     @GET("videos")
-    suspend fun getVideos():Response<SOvideo?>
+    suspend fun getVideos():Response<List<SOvideo>?>
 }
