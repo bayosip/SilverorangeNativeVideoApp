@@ -13,6 +13,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -20,6 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.ui.StyledPlayerView
@@ -27,10 +31,21 @@ import com.silverorange.videoplayer.R
 import com.silverorange.videoplayer.data.SOvideo
 import com.silverorange.videoplayer.ui.presentation.view_model.MainViewModel
 
-
 @Composable
 fun VideoScreen(viewModel: MainViewModel) {
-    VideoPlayerBox(viewModel = viewModel)
+    if (viewModel._state.value.videos != null)
+        VideoPlayerBox(viewModel = viewModel)
+    else {
+        Text(
+            text = "Please Wait",
+            textAlign = TextAlign.Center,
+            style = TextStyle(
+                color = Color.Black,
+                fontSize = 20.sp
+            ),
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
 }
 
 @Composable
@@ -57,6 +72,7 @@ fun VideoPlayerBox(viewModel: MainViewModel) {
 
                 override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
                     super.onMediaItemTransition(mediaItem, reason)
+                    viewModel.changePlayListIndex(this@apply.currentPeriodIndex)
                     titleVisibleState.value = true
                     videoTitle.value = state.value.currentVideo?.title ?: "..."
                 }
@@ -70,16 +86,20 @@ fun VideoPlayerBox(viewModel: MainViewModel) {
     }.build()
 
     exoPlayer.setAudioAttributes(attributes, true)
+    val mediaItems = arrayListOf<MediaItem>()
+    state.value.videos?.forEach {
+        val mediaItem = MediaItem.Builder().apply {
+            setUri(Uri.parse(it.fullURL))
+            setMediaMetadata(MediaMetadata.Builder().apply {
+                setDisplayTitle(it.title)
+            }.build())
+        }.build()
+        mediaItems.add(mediaItem)
+    }
 
-    val mediaItem = MediaItem.Builder().apply {
-        setUri(Uri.parse(viewModel._state.value.currentVideo?.fullURL))
-        setMediaMetadata(MediaMetadata.Builder().apply {
-            setDisplayTitle(state.value.currentVideo?.title)
-        }.build())
-    }.build()
 
     LaunchedEffect(key1 = true, block = {
-        exoPlayer.setMediaItem(mediaItem)
+        exoPlayer.setMediaItems(mediaItems)
         exoPlayer.playWhenReady = state.value.isVideoPlaying
     })
 
@@ -107,6 +127,8 @@ fun PlayerControls(
         playPauseIcon.value = R.drawable.ic_pause
     } else playPauseIcon.value = R.drawable.ic_play
 
+
+
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
@@ -117,7 +139,7 @@ fun PlayerControls(
 
         // video title
         Text(
-            text = "Current Title",
+            text = viewModel._state.value.currentVideo?.title ?: "",
             color = Color.White,
             modifier =
             Modifier
@@ -138,7 +160,7 @@ fun PlayerControls(
                 .constrainAs(prev) {
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
-                    start.linkTo(play.end, 16.dp)
+                    start.linkTo(play.start, 16.dp)
                 },
             shape = CircleShape,
             border = BorderStroke(0.1.dp, Color.Black)
@@ -155,7 +177,8 @@ fun PlayerControls(
                 .constrainAs(play) {
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
-                    start.linkTo(play.end, 16.dp)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
                 },
             shape = CircleShape,
             border = BorderStroke(0.1.dp, Color.Black)

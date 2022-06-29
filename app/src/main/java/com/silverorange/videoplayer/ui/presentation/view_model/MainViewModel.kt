@@ -62,6 +62,14 @@ class MainViewModel @Inject constructor(
         else state.value = _state.value.copy(isVideoPlaying = true)
     }
 
+    fun changePlayListIndex(index:Int){
+        state.value = _state.value.copy(
+            isVideoPlaying = true,
+            currentIndex = index,
+            currentVideo = _state.value.videos?.get(index)
+        )
+    }
+
     //If the end of playList reached, play zero index video, else play next video
     fun playNextVideo() {
         val next = if (_state.value.currentIndex == (_state.value.videos?.size?.minus(1)))
