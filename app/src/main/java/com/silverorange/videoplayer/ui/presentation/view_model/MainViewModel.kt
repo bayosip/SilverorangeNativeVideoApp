@@ -13,6 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,17 +34,23 @@ class MainViewModel @Inject constructor(
             getVideosUseCase().collectLatest { result ->
                 when (result.status) {
                     Resource.STATUS.SUCCESS -> {
-                        state.value = _state.value.copy(
-                            videos = result.data,
-                            isLoading = false,
-                            currentVideo = result.data?.get(0)
-                        )
+                        withContext(Dispatchers.Main) {
+                            state.value = _state.value.copy(
+                                videos = result.data,
+                                isLoading = false,
+                                currentVideo = result.data?.get(0)
+                            )
+                        }
                     }
                     Resource.STATUS.ERROR -> Log.e(
                         TAG,
                         "getVideos: ${result.errorCode} - ${result.message}",
                     )
-                    Resource.STATUS.LOADING -> state.value = _state.value.copy(isLoading = true)
+                    Resource.STATUS.LOADING ->{
+                        withContext(Dispatchers.Main) {
+                            state.value = _state.value.copy(isLoading = true)
+                        }
+                    }
                 }
             }
         }

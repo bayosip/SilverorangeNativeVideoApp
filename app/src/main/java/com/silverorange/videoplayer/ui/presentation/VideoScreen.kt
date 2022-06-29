@@ -88,6 +88,7 @@ fun VideoPlayerBox(viewModel: MainViewModel) {
             viewModel = viewModel,
             exoPlayer = exoPlayer,
         )
+        VideoDescriptionSection(video = state.value.currentVideo)
     }
 }
 

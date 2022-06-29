@@ -15,7 +15,7 @@ data class Resource<out T>(
 
     companion object {
         fun <T> success(data: T) = Resource(STATUS.SUCCESS, data, "Success")
-        fun <T> loading(data: T? = null) = Resource(STATUS.LOADING, data, "Loading")
+        fun loading() = Resource(STATUS.LOADING, null, "")
         fun error(message: String, errorCode: String? = null) =
             Resource(STATUS.ERROR, null, message, errorCode)
     }
