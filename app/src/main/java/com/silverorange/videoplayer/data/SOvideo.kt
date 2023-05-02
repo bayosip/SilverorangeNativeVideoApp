@@ -17,5 +17,4 @@ data class SOvideo(
     val publishedAt: String,
     @SerializedName("author")
     val author: Author,
-) {
-}
+)

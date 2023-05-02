@@ -13,7 +13,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -21,15 +20,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.silverorange.videoplayer.R
 import com.silverorange.videoplayer.data.SOvideo
-import com.silverorange.videoplayer.ui.presentation.view_model.MainViewModel
+import com.silverorange.videoplayer.ui.view_model.MainViewModel
 
 @Composable
 fun VideoScreen(viewModel: MainViewModel) {
@@ -77,6 +73,7 @@ fun VideoPlayerBox(viewModel: MainViewModel) {
                     videoTitle.value = state.value.currentVideo?.title ?: "..."
                 }
             })
+            playWhenReady = state.value.isVideoPlaying
         }
     }
 
@@ -100,7 +97,6 @@ fun VideoPlayerBox(viewModel: MainViewModel) {
 
     LaunchedEffect(key1 = true, block = {
         exoPlayer.setMediaItems(mediaItems)
-        exoPlayer.playWhenReady = state.value.isVideoPlaying
     })
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -122,6 +118,7 @@ fun PlayerControls(
     val playPauseIcon = rememberSaveable {
         mutableStateOf(R.drawable.ic_play)
     }
+
 
     if (viewModel._state.value.isVideoPlaying) {
         playPauseIcon.value = R.drawable.ic_pause
@@ -167,7 +164,7 @@ fun PlayerControls(
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_previous),
-                contentDescription = "Previous"
+                contentDescription = "Previous",
             )
         }
         OutlinedButton(

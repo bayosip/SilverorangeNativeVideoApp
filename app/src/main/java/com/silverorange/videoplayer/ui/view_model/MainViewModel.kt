@@ -1,4 +1,4 @@
-package com.silverorange.videoplayer.ui.presentation.view_model
+package com.silverorange.videoplayer.ui.view_model
 
 import android.util.Log
 import androidx.compose.runtime.MutableState
